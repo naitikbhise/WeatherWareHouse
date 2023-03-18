@@ -12,6 +12,7 @@ We use basic python libraries like requests, SQLAlchemy,  pandas, numpy, fast ap
 Validation of input and within warehouse:
 We validate for missing values, null values and schemas within the sql tables in the database. While inserting data, we check the data types of the essential variables like temperature, wind and precipitation(float). 
 
+We have data updating every house as every hour, we expect the values in meteomatics to update.
 We check values between tables for consistency and nulls in the internal validation.
 
 # API Documentation
