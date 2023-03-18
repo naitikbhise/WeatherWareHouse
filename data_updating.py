@@ -8,6 +8,7 @@ from sqlalchemy.sql import *
 from datetime import datetime, timedelta
 from data_ingestion import *
 
+# List of locations
 locations = [{'location':"London",'latitude':51.5072,'longitude':0.1276},
             {'location':"Stockholm",'latitude':59.3293, 'longitude':18.0686},
             {'location':"Dubai",'latitude':25.2048, 'longitude':55.2708},
@@ -23,17 +24,21 @@ locations = [{'location':"London",'latitude':51.5072,'longitude':0.1276},
 username = 'unemployed_bhise'
 password = '78iaBYGq8N'
     
+# username:postgres; password :bhise at localhost port 5432. Also starting of SQL engine
 postgres_conn_string = 'postgresql+psycopg2://postgres:bhise@localhost:5432/weatherdb'
 engine = create_engine(postgres_conn_string)
 Session = sessionmaker(bind=engine)
 
+# Forever running while loop
 while True:
+    # Check Time
     now = datetime.now() - timedelta(hours=1)
     nextday = now + timedelta(days=7)
     formatted_date = now.strftime('%Y-%m-%dT%H:%M:%SZ')
     nextformatted_date = nextday.strftime('%Y-%m-%dT%H:%M:%SZ')
     
     data = []
+    # Retreive Data rfom api meteomatics
     for location in locations:
         url = 'https://api.meteomatics.com/'+formatted_date+'--'+nextformatted_date+':PT1H/t_2m:C,precip_1h:mm,wind_speed_10m:ms/'+ str(location['latitude']) + ',' + str(location['longitude'])+'/json'
         response = requests.get(url, auth=(username, password))
@@ -46,7 +51,9 @@ while True:
     i = 0
     new_session = Session()
     for location in locations:
-    
+        """
+            Here we take the json objects obtained from the meteomatics API and construct schema class items for ingesting into database.
+        """
         print(" Updating Temperature Table ")
         for item in data[i]()['data'][0]['coordinates'][0]['dates']:
             row = {}
@@ -198,5 +205,6 @@ while True:
                 new_session.merge(existing_row)
         i+=1
     new_session.commit()
+    # Sleep for an hour before resuming
     time.sleep(3600)
     
