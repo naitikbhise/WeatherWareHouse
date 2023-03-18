@@ -34,6 +34,7 @@ def check_data_types(df, Schema):
     '''
     return str(df.dtypes.to_dict())==Schema
 
+
 table_names = ['location_table','temp_data','precipitation_data','wind_data','wide_data','long_data']
 
 Schemas = ["{'id': dtype('int64'), 'location': dtype('O'), 'latitude': dtype('float64'), 'longitude': dtype('float64')}", "{'id': dtype('int64'), 'location': dtype('O'), 'date': dtype('O'), 'hour': dtype('int64'), 'latitude': dtype('float64'), 'longitude': dtype('float64'), 'temperature': dtype('float64')}", "{'id': dtype('int64'), 'location': dtype('O'), 'latitude': dtype('float64'), 'longitude': dtype('float64'), 'preciipitation': dtype('float64'), 'hour': dtype('int64'), 'date': dtype('O')}", "{'id': dtype('int64'), 'location': dtype('O'), 'latitude': dtype('float64'), 'longitude': dtype('float64'), 'wind': dtype('float64'), 'hour': dtype('int64'), 'date': dtype('O')}", "{'id': dtype('int64'), 'location': dtype('O'), 'date': dtype('O'), 'hour': dtype('int64'), 'temperature': dtype('float64'), 'preciipitation': dtype('float64'), 'wind': dtype('float64'), 'sunshine': dtype('O')}", "{'id': dtype('int64'), 'location': dtype('O'), 'date': dtype('O'), 'hour': dtype('int64'), 'Variable': dtype('O'), 'Value': dtype('float64')}"]
@@ -41,8 +42,47 @@ Schemas = ["{'id': dtype('int64'), 'location': dtype('O'), 'latitude': dtype('fl
 idx = 0
 for table in table_names:
     query = "Select * from "+table
+    print("Table :",table)
     df = pd.read_sql_query(query, engine)
     print("missing_values : ",check_missing_values(df))
     print("Possibility of duplicates : ",check_duplicates(df))
     print("Schema check : ",check_data_types(df,Schemas[idx]))
     idx += 1
+
+#Integrity - wind
+# Get the common columns from both tables
+wind_df = pd.read_sql_query("Select location, date, hour, wind from wind_data", engine)
+wide_df = pd.read_sql_query("Select location, date, hour, wind from wide_data", engine)
+
+# Merge the two dataframes on location, date and hour columns
+merged_df = pd.merge(wind_df, wide_df, on=['location', 'date', 'hour'])
+
+# Check for any missing or inconsistent values
+print("Wind Missing Values :",merged_df.isnull().values.any())  # True if there are any missing values
+print("Wind Consistency :",merged_df['wind_x'].equals(merged_df['wind_y']))  # True if wind values are consistent between wind_df and wide_df
+
+    
+#Integrity - temperature
+# Get the common columns from both tables
+temp_df = pd.read_sql_query("Select location, date, hour, temperature from temp_data", engine)
+wide_df = pd.read_sql_query("Select location, date, hour, temperature from wide_data", engine)
+
+# Merge the two dataframes on location, date and hour columns
+merged_df = pd.merge(temp_df, wide_df, on=['location', 'date', 'hour'])
+
+# Check for any missing or inconsistent values
+print("Temperature Missing Values :",merged_df.isnull().values.any())  # True if there are any missing values
+print("Temperature Consistency :",merged_df['temperature_x'].equals(merged_df['temperature_y']))  # True if wind values are consistent between temp_df and wide_df
+    
+#Integrity - precipitation
+# Get the common columns from both tables
+prec_df = pd.read_sql_query("Select location, date, hour, preciipitation from precipitation_data", engine)
+wide_df = pd.read_sql_query("Select location, date, hour, preciipitation from wide_data", engine)
+
+# Merge the two dataframes on location, date and hour columns
+merged_df = pd.merge(prec_df, wide_df, on=['location', 'date', 'hour'])
+
+# Check for any missing or inconsistent values
+print("Precipitation Missing Values :",merged_df.isnull().values.any())  # True if there are any missing values
+print("Precipitation Consistency :",merged_df['preciipitation_x'].equals(merged_df['preciipitation_y']))  # True if wind values are consistent between prec_df and wide_df
+    
