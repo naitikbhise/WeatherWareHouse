@@ -32,6 +32,16 @@ The API supports the following endpoints:
 4. /winds
 5. /averages
 
+Payload is essential for 2,3,4,5. Example payload:
+"""
+{
+    "date_start": "2022-03-17",
+    "day_count": 9,
+    "location": ["Mumbai","Toronto"],
+    "statistics": 1
+}
+"""
+
 ### Endpoints
 
 1. /locations
