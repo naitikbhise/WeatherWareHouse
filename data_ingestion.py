@@ -6,17 +6,20 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import *
 from datetime import datetime
 
-# Meteomatics credentials
+# Meteomatics credentials- in your case, that could vary
 username = 'unemployed_bhise'
 password = '78iaBYGq8N'
     
+# username:postgres; password :bhise at localhost port 5432
 postgres_conn_string = 'postgresql+psycopg2://postgres:bhise@localhost:5432/weatherdb'
 
+# SQL Engine creation - connection to the db
 engine = create_engine(postgres_conn_string)
 Base = declarative_base(bind=engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# Creation of Table schemas
 class LocationData(Base):
     __tablename__ = "locations_table"
     
@@ -77,7 +80,7 @@ class LongData(Base):
     location = Column(String)
     date = Column(String)
     hour = Column(Integer)
-    Variable = Column(String)
+    Variable = Column(String) #Variable would include precipitation, wind and temperature.
     Value = Column(Float)
     
 LocationData.__table__.create(bind=engine, checkfirst=True)
@@ -88,6 +91,7 @@ WindData.__table__.create(bind=engine, checkfirst=True)
 WideData.__table__.create(bind=engine, checkfirst=True)
 LongData.__table__.create(bind=engine, checkfirst=True)
 
+# Set of Locations
 locations = [{'location':"London",'latitude':51.5072,'longitude':0.1276},
             {'location':"Stockholm",'latitude':59.3293, 'longitude':18.0686},
             {'location':"Dubai",'latitude':25.2048, 'longitude':55.2708},
@@ -108,7 +112,7 @@ for place in locations:
     else:
         session.add(row)
         
-# Data Extraction
+# Requests Data Extraction
 data = []
 for location in locations:
     url = 'https://api.meteomatics.com/2023-03-17T00:00:00Z--2023-03-31T00:00:00Z:PT1H/t_2m:C,precip_1h:mm,wind_speed_10m:ms/'+ str(location['latitude']) + ',' + str(location['longitude'])+'/json'
@@ -128,7 +132,9 @@ new_session = Session()
 
 i = 0
 for location in locations:
-    
+    """
+    Here we take the json objects obtained from the meteomatics API and construct schema class items for ingesting into database.
+    """
     print(" Updating Temperature Table ")
     for item in data[i]()['data'][0]['coordinates'][0]['dates']:
         row = {}
