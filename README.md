@@ -6,7 +6,7 @@ We use basic python libraries like requests, SQLAlchemy,  pandas, numpy, fast ap
 - SQL Alchemy - construction of table schemas for postgres
 - Pandas - working with data and doing validation and retreival operations from warehouse.
 - numpy - analysis of mathematical data 
-- fast api - creation of API
+- fast api - API implementation
 - uvicorn - deploying API.
 
 Validation of input and within warehouse:
