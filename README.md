@@ -54,7 +54,7 @@ Returns temperature data.
 ### Query Parameters
 - date_start : Start date for the data, in the format YYYY-MM-DD.
 - day_count : Number of days to include in the data. Must be a positive integer between 1 and 10.
-- location : Location to filter the data for.
+- location : Location List to filter the data for.
 - statistics (optional): If set to 1, will return statistics for each location and date (average temperature and maximum temperature).
 ### Response
 - Status Code: 200 OK
@@ -72,7 +72,7 @@ Returns precipitation data.
 ### Query Parameters
 - date_start : Start date for the data, in the format YYYY-MM-DD.
 - day_count : Number of days to include in the data. Must be a positive integer between 1 and 10.
-- location : Location to filter the data for.
+- location : Location List to filter the data for.
 - statistics (optional): If set to 1, will return statistics for each location and date (average precipitation and maximum precipitation).
 ### Response
 - Status Code: 200 OK
@@ -90,7 +90,7 @@ Returns precipitation data.
 ### Query Parameters
 - date_start : Start date for the data, in the format YYYY-MM-DD.
 - day_count : Number of days to include in the data. Must be a positive integer between 1 and 10.
-- location : Location to filter the data for.
+- location : Location List to filter the data for.
 - statistics (optional): If set to 1, will return statistics for each location and date (average precipitation and maximum precipitation).
 ### Response
 - Status Code: 200 OK
@@ -108,7 +108,7 @@ Returns averages for all 3 quantities.
 ### Query Parameters
 - date_start : Start date for the data, in the format YYYY-MM-DD.
 - day_count : Number of days to include in the data. Must be a positive integer between 1 and 10.
-- location : Location to filter the data for.
+- location : Location List to filter the data for.
 - statistics (optional): If set to 1, will return statistics for each location and date (average precipitation and maximum precipitation).
 ### Response
 - Status Code: 200 OK
