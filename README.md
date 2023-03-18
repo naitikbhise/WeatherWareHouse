@@ -1,4 +1,4 @@
-# WeatherWareHouse
+# Weather WareHouse
 Weather Warehouse is a github dedicated to the creation of the data warehouse for the storage of the climate data cleaned from meteomatics API(https://www.meteomatics.com/en/api/getting-started/). We extract data from the meteomatics API reagrding temperature, wind and precipitation for 10 cities. We store them within few tables in our postgres db weatherdb. weatherdb consists of a set of tables dedicated to each field, one for long table and another for wide table. 
 
 We use basic python libraries like requests, SQLAlchemy,  pandas, numpy, fast api and uvicorn.
@@ -9,12 +9,16 @@ We use basic python libraries like requests, SQLAlchemy,  pandas, numpy, fast ap
 - fast api - creation of API
 - uvicorn - deploying API.
 
+
+
 # API Documentation
 ## Overview
 
 API site: https://f1a7-74-15-65-27.ngrok.io
 
-This API provides weather data for various locations.
+This API provides weather data for a set of 10 locations.
+
+location_list = ["Mumbai","Hong Kong","Stockholm","London","Toronto","Dubai","San Francisco","Zurich","Singapore","New York"]
 
 The API supports the following endpoints:
 
@@ -39,11 +43,8 @@ Returns a list of available locations.
 ### Example Response
 
 """
-
 [    {        "location": "New York"    },    {        "location": "Los Angeles"    },    {        "location": "San Francisco"    }]
-
 """
-
 2. /temperatures
 Returns temperature data.
 
@@ -60,8 +61,7 @@ Returns temperature data.
 - Content Type: application/json
 ### Example Response
 """
-[    {        "date": "2023-03-14T00:00:00",        "location": "New York",        "temperature": 12.5    },    {        "date": "2023-03-14T00:00:00",        "location": "San Francisco",        "temperature": 21.3    },    {        "date": "2023-03-14T00:00:00",        "location": "Mumbai",        "temperature": 35.6    }]
-"""
+[    {        "date": "2023-03-14T00:00:00",        "location": "New York",        "temperature": 12.5    },    {        "date": "2023-03-14T00:00:00",        "location": "San Francisco",        "temperature": 21.3    },    {        "date": "2023-03-14T00:00:00",        "location": "Mumbai",        "temperature": 35.6    }]"""
 
 3. /precipitations
 Returns precipitation data.
@@ -79,9 +79,7 @@ Returns precipitation data.
 - Content Type: application/json
 ### Example Response
 
-"""
-[    {        "date": "2023-03-14T00:00:00",        "location": "New York",        "precipitation": 3.5    },    {        "date": "2023-03-14T00:00:00",        "location": "Los Angeles",        "precipitation": 0.0    },    {        "date": "2023-03-14T00:00:00",        "location": "San Francisco",        "precipitation": 1.2    }]
-"""
+"""[    {        "date": "2023-03-14T00:00:00",        "location": "New York",        "precipitation": 3.5    },    {        "date": "2023-03-14T00:00:00",        "location": "Los Angeles",        "precipitation": 0.0    },    {        "date": "2023-03-14T00:00:00",        "location": "San Francisco",        "precipitation": 1.2    }]"""
 
 4. /winds
 Returns precipitation data.
@@ -99,8 +97,7 @@ Returns precipitation data.
 - Content Type: application/json
 ### Example Response
 
-"""
-[    {        "date": "2023-03-14T00:00:00",        "location": "New York",        "wind": 3.5    },    {        "date": "2023-03-14T00:00:00",        "location": "Los Angeles",        "wind": 0.0    },    {        "date": "2023-03-14T00:00:00",        "location": "San Francisco",        "wind": 1.2    }]"""
+"""[    {        "date": "2023-03-14T00:00:00",        "location": "New York",        "wind": 3.5    },    {        "date": "2023-03-14T00:00:00",        "location": "Los Angeles",        "wind": 0.0    },    {        "date": "2023-03-14T00:00:00",        "location": "San Francisco",        "wind": 1.2    }]"""
 
 5. /averages
 Returns averages for all 3 quantities.
@@ -118,8 +115,7 @@ Returns averages for all 3 quantities.
 - Content Type: application/json
 ### Example Response
 
-"""
-{
+"""{
         "location": "Mumbai",
         "date": "2023-03-17T00:00:00",
         "wind_avg": 2.5749999999999997,
@@ -139,5 +135,11 @@ Returns averages for all 3 quantities.
         "wind_avg": 2.6375,
         "temp_avg": 26.570833333333336,
         "prec_avg": 0.06333333333333334
-    }
-    """
+    }"""
+
+## Error codes
+
+- Error code 422, detail="Mention the 10 cities written in the Documentation." Check only the cities in the location list
+- Error code 403, detail="Forecasting too much into future"
+- Error code 400, detail="Bad data. try positive integer values."
+- Error code 405, detail="Need the count of days" count of days between 1 and 10. 
