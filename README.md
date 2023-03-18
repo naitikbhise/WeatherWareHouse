@@ -1,5 +1,18 @@
+# WeatherWareHouse
+Weather Warehouse is a github dedicated to the creation of the data warehouse for the storage of the climate data cleaned from meteomatics API(https://www.meteomatics.com/en/api/getting-started/). We extract data from the meteomatics API reagrding temperature, wind and precipitation for 10 cities. We store them within few tables in our postgres db weatherdb. weatherdb consists of a set of tables dedicated to each field, one for long table and another for wide table. 
+
+We use basic python libraries like requests, SQLAlchemy,  pandas, numpy, fast api and uvicorn.
+- requests - data retreival from meteomatics API 
+- SQL Alchemy - construction of table schemas for postgres
+- Pandas - working with data and doing validation and retreival operations from warehouse.
+- numpy - analysis of mathematical data 
+- fast api - creation of API
+- uvicorn - deploying API.
+
 # API Documentation
 ## Overview
+
+API site: https://f1a7-74-15-65-27.ngrok.io
 
 This API provides weather data for various locations.
 
